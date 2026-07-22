@@ -3,6 +3,7 @@ using System.Data;
 using System.Windows;
 using Reserveroom.Exception;
 using Reserveroom.Models;
+using Reserveroom.viewModels;
 
 namespace Reserveroom;
 
@@ -16,28 +17,18 @@ public partial class App : Application
 
     try
     {
-      Hotel hotel = new("Trung Hotel");
-      hotel.MakeReservation(new Reservation(
-        new RoomID(1, 3), // RoomID: Phòng 3, Tầng 1
-        "PhamTrung", // Username/Tên khách đặt
-        new DateTime(2026, 7, 22), // StartTime
-        new DateTime(2026, 7, 25)  // EndTime
-      ));
+      //cách viết này là tương đương bên dưới
+      // MainWindow = new MainWindow()
+      //   {
+      //       DataContext = mainViewModel
+      //   };
+      //   MainWindow.Show();
+      
+      MainWindow mainWindow = new MainWindow(); // Tạo màn hình chính
+      mainWindow.DataContext = new MainViewModel(); // Set DataContext cho màn hình chính
+      mainWindow.Show(); // Hiển thị màn hình chính
 
-      hotel.MakeReservation(new Reservation(
-      new RoomID(1, 3), // RoomID: Phòng 2, Tầng 1
-      "PhamTrung", // Username/Tên khách đặt
-      new DateTime(2026, 7, 22), // StartTime
-      new DateTime(2026, 7, 28)  // EndTime
-    ));
-      IEnumerable<Reservation> listReverstation = hotel.GetReservationsForUser("PhamTrung");
-
-      foreach (Reservation reservation in listReverstation)
-      {
-        Console.WriteLine(reservation);
-
-      }
-      base.OnStartup(e);
+      base.OnStartup(e); // Gọi phương thức OnStartup của lớp cha
     }
     catch (ReservationConflictExceptionException ex)
     {

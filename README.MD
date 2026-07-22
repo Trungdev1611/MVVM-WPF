@@ -22,3 +22,8 @@ Lấy dữ liệu từ Model, "nhào nặn/biến đổi" (Format) thành dạng
 Hứng các hành động từ View (thông qua ICommand như SubmitCommand, CancelCommand) rồi gọi sang Model xử lý.
 
 ViewModel KHÔNG chứa Business Logic gốc, nó chỉ gọi Model thực hiện Business Logic đó.
+
+
+
+Luồng ứng dụng MVVM
+MainViewModel -> CurrentViewModel quyết định màn hình nào đang active hiện tại

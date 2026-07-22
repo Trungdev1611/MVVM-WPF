@@ -29,8 +29,10 @@
             Grid.Row="0"
             Grid.Column="1"
             VerticalAlignment="Center"
-            Click="MakeReservation_Click"
-            Content="Make Reservation" />
+        
+            Content="Make Reservation"
+            Command="{Binding MakeReservationCommand}"
+             />
 
         <DataGrid
             Grid.Row="1"
@@ -39,7 +41,9 @@
             Margin="0,20,0,0"
             AutoGenerateColumns="False"
             IsReadOnly="True"
-            ItemsSource="{Binding Reservations}">
+            GridLinesVisibility="Horizontal"
+            CanUserReorderColumns="False"
+            ItemsSource="{Binding Reservations}"> <!--Binding Reservations là property trong ReservationListingViewModel-->
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="200"
