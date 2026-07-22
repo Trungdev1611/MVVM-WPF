@@ -7,6 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+      <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!-- Nửa trên: Form -->
+            <RowDefinition Height="*" />    <!-- Nửa dưới: Danh sách -->
+        </Grid.RowDefinitions>
 
+        <!-- Component 1: Form tạo reservation -->
+        <views:MakeReservationView Grid.Row="0" />
+
+        <!-- Component 2: Danh sách reservation -->
+        <views:ReservationListingView Grid.Row="1" Margin="0,20,0,0" />
+    </Grid>
     </Grid>
 </Window>

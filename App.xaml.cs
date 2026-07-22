@@ -3,7 +3,6 @@ using System.Data;
 using System.Windows;
 using Reserveroom.Exception;
 using Reserveroom.Models;
-using Reservoom.Models;
 
 namespace Reserveroom;
 

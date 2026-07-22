@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <RootNamespace>Reserveroom</RootNamespace>
+    <AssemblyName>Reserveroom</AssemblyName>
   </PropertyGroup>
 
 </Project>

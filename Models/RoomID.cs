@@ -1,4 +1,4 @@
-namespace Reservoom.Models;
+namespace Reserveroom.Models;
 
 public class RoomID
 {
