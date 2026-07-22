@@ -1,0 +1,42 @@
+## Build
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+
+## Visual Studio / Rider / VS Code
+.vs/
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.sln.docstates
+*.DotSettings.user
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+project.lock.json
+project.fragment.lock.json
+
+## WPF / MSBuild temp
+*_wpftmp.csproj
+*.cache
+*.pdb
+*.ilk
+*.log
+*.tlog
+*.binlog
+
+## OS
+Thumbs.db
+Desktop.ini
+.DS_Store
