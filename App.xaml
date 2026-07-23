@@ -1,9 +1,15 @@
-﻿<Application x:Class="Reserveroom.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Reserveroom"
-             StartupUri="MainWindow.xaml">
+﻿<Application
+    x:Class="Reserveroom.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:Reserveroom.viewModels"
+    xmlns:views1="clr-namespace:Reserveroom.views">
     <Application.Resources>
-         
+        <DataTemplate DataType="{x:Type vm:ReservationListingViewModel}">
+            <views1:ReservationListingView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MakeReservationViewModel}">
+            <views1:MakeReservationView />
+        </DataTemplate>
     </Application.Resources>
 </Application>

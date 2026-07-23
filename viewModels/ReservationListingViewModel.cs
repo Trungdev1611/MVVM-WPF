@@ -7,8 +7,8 @@ namespace Reserveroom.viewModels;
 public class ReservationListingViewModel : ViewModelBase
 {
     //tạo field để lưu trữ danh sách row trong table
-    private readonly ObservableCollection<ReservationModel> _reservations;
-    public ObservableCollection<ReservationModel> Reservations => _reservations; //ép kiểu từ ObservableCollection<Reservation> sang IEnumerable<Reservation>
+    private readonly ObservableCollection<ReservationViewModel> _reservations;
+    public ObservableCollection<ReservationViewModel> Reservations => _reservations; //ép kiểu từ ObservableCollection<Reservation> sang IEnumerable<Reservation>
     //     public ObservableCollection<Reservation> Reservations tương đương bên trên
     // {
     //     get
@@ -22,9 +22,13 @@ public class ReservationListingViewModel : ViewModelBase
 
     public ReservationListingViewModel()
     {
-        _reservations = new ObservableCollection<ReservationModel>();
+        _reservations = new ObservableCollection<ReservationViewModel>();
+        // 2. SET DATA DEFAULT (Thêm dữ liệu mẫu ban đầu vào đây)
+        Reservations.Add(new ReservationViewModel(new Models.Reservation(new Models.RoomID(1, 12), "Sean", DateTime.Now, DateTime.Now.AddDays(2))));
+        Reservations.Add(new ReservationViewModel(new Models.Reservation(new Models.RoomID(2, 101), "John",
+            DateTime.Now, DateTime.Now.AddDays(5))));
 
-      
+
     }
 
 

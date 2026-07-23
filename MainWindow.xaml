@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Reserveroom"
-        xmlns:views="clr-namespace:Reserveroom.views"
+        xmlns:vm="clr-namespace:Reserveroom.viewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
       <Grid>
@@ -15,10 +15,11 @@
         </Grid.RowDefinitions>
 
         <!-- Component 1: Form tạo reservation -->
-        <views:MakeReservationView Grid.Row="0" />
+        <!-- <views:MakeReservationView Grid.Row="0" /> -->
 
         <!-- Component 2: Danh sách reservation -->
-        <views:ReservationListingView Grid.Row="1" Margin="0,20,0,0" />
+        <!-- <views:ReservationListingView Grid.Row="1" Margin="0,20,0,0" /> -->
+     <ContentControl Content="{Binding CurrentViewModel}" />
     </Grid>
     </Grid>
 </Window>

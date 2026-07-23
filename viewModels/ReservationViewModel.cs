@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace Reserveroom.Models;
 
-public class ReservationModel
+public class ReservationViewModel
 {
     private readonly Reservation _reservation;
     public string RoomID
@@ -16,7 +16,7 @@ public class ReservationModel
     public DateTime StartDate => _reservation.StartTime;
     public DateTime EndDate => _reservation.EndTime;
 
-    public ReservationModel(Reservation reservation)
+    public ReservationViewModel(Reservation reservation)
     {
         _reservation = reservation;
     }

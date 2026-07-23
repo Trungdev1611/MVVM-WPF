@@ -1,8 +1,5 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 using Reserveroom.Exception;
-using Reserveroom.Models;
 using Reserveroom.viewModels;
 
 namespace Reserveroom;
