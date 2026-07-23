@@ -1,8 +1,10 @@
+using System.Windows;
 using System.Windows.Input;
+using Reserveroom.Models;
 
 namespace Reserveroom.viewModels;
 
-public class MakeReservationViewModel: ViewModelBase
+public class MakeReservationViewModel : ViewModelBase
 {
     private string _username;
     private int _floorNo;
@@ -71,6 +73,38 @@ public class MakeReservationViewModel: ViewModelBase
 
     public MakeReservationViewModel()
     {
-        
+        // Set giá trị mặc định khi ViewModel này được khởi tạo
+
     }
+
+    // Constructor 2: Cho phép gọi và truyền dữ liệu từ bên ngoài vào
+    public MakeReservationViewModel(MainViewModel mainViewModel, string defaultUsername, int defaultFloor, int defaultRoom)
+    {
+        _username = defaultUsername;
+        _floorNo = defaultFloor;
+        _roomNo = defaultRoom;
+        _startDate = DateTime.Today;
+        _endDate = DateTime.Today.AddDays(1);
+
+        this.MakeReservationSubmitCommand = new RelayCommand(() =>
+        {
+
+            var reservationNew = new Reservation(new RoomID(10, 26), "Trung",DateTime.Parse("2026-07-23"), DateTime.Parse("2026-07-24"));
+            var itemAddNew = new ReservationViewModel(reservationNew );
+            
+            this.NavigationToReservation(mainViewModel);
+        });
+
+        this.MakeReservationCancelCommand = new RelayCommand(() =>
+        {
+            this.NavigationToReservation(mainViewModel);
+        });
+    }
+
+    private void NavigationToReservation(MainViewModel mainViewModel)
+    {
+        mainViewModel.CurrentViewModel = new ReservationListingViewModel(mainViewModel);
+
+    }
+
 }

@@ -18,9 +18,11 @@ public class ReservationListingViewModel : ViewModelBase
     // }
     //tạo property để trả về danh sách row trong table
 
-    public ICommand MakeReservationCommand { get; } //readonly command
+    public ICommand MakeReservationCommand { get; } //readonly command - nút bấm trong ReservationListingView.xaml
 
-    public ReservationListingViewModel()
+
+
+    public ReservationListingViewModel(MainViewModel mainViewModel)
     {
         _reservations = new ObservableCollection<ReservationViewModel>();
         // 2. SET DATA DEFAULT (Thêm dữ liệu mẫu ban đầu vào đây)
@@ -28,6 +30,11 @@ public class ReservationListingViewModel : ViewModelBase
         Reservations.Add(new ReservationViewModel(new Models.Reservation(new Models.RoomID(2, 101), "John",
             DateTime.Now, DateTime.Now.AddDays(5))));
 
+        
+        MakeReservationCommand = new RelayCommand(() =>
+        {
+            mainViewModel.CurrentViewModel = new MakeReservationViewModel(mainViewModel,"TrungPham",1, 102 );
+        });
 
     }
 
