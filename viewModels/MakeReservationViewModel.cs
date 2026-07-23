@@ -89,9 +89,10 @@ public class MakeReservationViewModel : ViewModelBase
         this.MakeReservationSubmitCommand = new RelayCommand(() =>
         {
 
-            var reservationNew = new Reservation(new RoomID(10, 26), "Trung",DateTime.Parse("2026-07-23"), DateTime.Parse("2026-07-24"));
+            var reservationNew = new Reservation(new RoomID(this._floorNo, this._roomNo), this._username,this._startDate, this._endDate);
             var itemAddNew = new ReservationViewModel(reservationNew );
             
+            mainViewModel.ListReservations.Add(itemAddNew);
             this.NavigationToReservation(mainViewModel);
         });
 

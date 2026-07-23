@@ -1,11 +1,19 @@
+using System.Collections.ObjectModel;
+using Reserveroom.Models;
+
 namespace Reserveroom.viewModels;
 
 public class MainViewModel: ViewModelBase
 {
     // Biến này quyết định màn hình nào đang active hiện tại
-    private ViewModelBase _currentViewModel;
+    private  ViewModelBase _currentViewModel;
+    
+    //tạo field để lưu trữ danh sách row trong table
+    public ObservableCollection <ReservationViewModel> Reservations = [];
+    
+    public  ObservableCollection<ReservationViewModel> ListReservations => Reservations;
 
-    public ViewModelBase CurrentViewModel
+    public  ViewModelBase CurrentViewModel
     {
         get => _currentViewModel;
         set
@@ -19,7 +27,7 @@ public class MainViewModel: ViewModelBase
     public MainViewModel()
     {
         // Ban đầu khởi chạy: Cho CurrentViewModel = màn hình Danh sách
-        CurrentViewModel = new ReservationListingViewModel(this);
+        _currentViewModel = new ReservationListingViewModel(this);
         // CurrentViewModel = new MakeReservationViewModel();
     }
 }
