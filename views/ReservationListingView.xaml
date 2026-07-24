@@ -65,19 +65,24 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <!--  Nút bấm nằm trên mỗi dòng  -->
+                                <!--
+                                  Command bind lên parent (ReservationListingViewModel),
+                                  CommandParameter = row hiện tại (ReservationViewModel).
+                                -->
                                 <Button
                                     Margin="0,0,6,0"
                                     Padding="8,3"
                                     Background="#3498DB"
-                                    Command="{Binding EditReservationCommand}"
+                                    Command="{Binding DataContext.EditReservationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
                                     Content="Sửa"
                                     Cursor="Hand"
                                     Foreground="White" />
                                 <Button
                                     Padding="5,2"
                                     Background="#E74C3C"
-                                    Command="{Binding DeleteReservationCommand}"
+                                    Command="{Binding DataContext.DeleteReservationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
                                     Content="Xóa"
                                     Foreground="White" />
                             </StackPanel>

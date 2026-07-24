@@ -1,4 +1,3 @@
-using System.Windows;
 using System.Windows.Input;
 using Reserveroom.Models;
 
@@ -6,17 +5,14 @@ namespace Reserveroom.viewModels;
 
 public class MakeReservationViewModel : ViewModelBase
 {
-    private string _username;
+    private string _username = string.Empty;
     private int _floorNo;
     private int _roomNo;
-    private DateTime _startDate;
-    private DateTime _endDate;
+    private DateTime _startDate = DateTime.Today;
+    private DateTime _endDate = DateTime.Today.AddDays(1);
 
-    private ReservationViewModel? _editingItem ; 
+    private ReservationViewModel? _editingItem;
 
-    private ReservationViewModel _itemDefault = new ReservationViewModel(new Reservation(new RoomID(3, 301), "usertest",DateTime.Today,DateTime.Today.AddDays(1)));
-
-    // Username property in MakeReservationViewModel
     public string Username
     {
         get => _username;
@@ -27,7 +23,6 @@ public class MakeReservationViewModel : ViewModelBase
         }
     }
 
-    // Floor No property in MakeReservationViewModel
     public int FloorNo
     {
         get => _floorNo;
@@ -37,7 +32,7 @@ public class MakeReservationViewModel : ViewModelBase
             OnPropertyChanged(nameof(FloorNo));
         }
     }
-    // Room No property in MakeReservationViewModel
+
     public int RoomNo
     {
         get => _roomNo;
@@ -47,7 +42,7 @@ public class MakeReservationViewModel : ViewModelBase
             OnPropertyChanged(nameof(RoomNo));
         }
     }
-    // Start Date property in MakeReservationViewModel
+
     public DateTime StartDate
     {
         get => _startDate;
@@ -58,7 +53,6 @@ public class MakeReservationViewModel : ViewModelBase
         }
     }
 
-    //End Date property in MakeReservationViewModel
     public DateTime EndDate
     {
         get => _endDate;
@@ -69,63 +63,47 @@ public class MakeReservationViewModel : ViewModelBase
         }
     }
 
-    // button submit command
     public ICommand MakeReservationSubmitCommand { get; }
-
-    //cancel button command
     public ICommand MakeReservationCancelCommand { get; }
 
-    //method for edit and set value
     public void SetReservationForEdit(ReservationViewModel itemEdit)
     {
-        if(itemEdit ==null) return;
+        if (itemEdit == null) return;
+
         Username = itemEdit.UserName;
         FloorNo = itemEdit.FloorNumber;
         RoomNo = itemEdit.RoomNumber;
         StartDate = itemEdit.StartDate;
         EndDate = itemEdit.EndDate;
-        this._editingItem = itemEdit;
+        _editingItem = itemEdit;
     }
 
-  
-
-    // Constructor 2: Cho phép gọi và truyền dữ liệu từ bên ngoài vào
     public MakeReservationViewModel(MainViewModel mainViewModel)
     {
-
-        this.MakeReservationSubmitCommand = new RelayCommand(() =>
+        MakeReservationSubmitCommand = new RelayCommand(() =>
         {
-            if(this._editingItem != null)
+            if (_editingItem != null)
             {
-                //edit data row
-                _editingItem.UpdateData(Username, FloorNo,RoomNo, StartDate,EndDate  );
+                _editingItem.UpdateData(Username, FloorNo, RoomNo, StartDate, EndDate);
             }
             else
             {
-                //case create new
-                ReservationViewModel newItem = null!;
+                // Chỉ tạo data — không cần gắn onEdit/onDelete
                 var reservation = new Reservation(new RoomID(FloorNo, RoomNo), Username, StartDate, EndDate);
-                newItem = new ReservationViewModel(
-                    reservation,
-                    onDelete: () => mainViewModel.ListReservations.Remove(newItem),
-                    onEdit: () => mainViewModel.EditReservation(newItem)
-                );
-                mainViewModel.ListReservations.Add(newItem);
+                mainViewModel.ListReservations.Add(new ReservationViewModel(reservation));
             }
-        
-            this.NavigationToReservation(mainViewModel);
+
+            NavigationToReservation(mainViewModel);
         });
 
-        this.MakeReservationCancelCommand = new RelayCommand(() =>
+        MakeReservationCancelCommand = new RelayCommand(() =>
         {
-            this.NavigationToReservation(mainViewModel);
+            NavigationToReservation(mainViewModel);
         });
     }
 
     private void NavigationToReservation(MainViewModel mainViewModel)
     {
         mainViewModel.CurrentViewModel = new ReservationListingViewModel(mainViewModel);
-
     }
-
 }
