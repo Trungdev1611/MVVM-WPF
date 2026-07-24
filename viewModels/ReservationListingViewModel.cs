@@ -1,55 +1,45 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Reserveroom.Models;
+using Reserveroom.Services;
 
 namespace Reserveroom.viewModels;
 
 public class ReservationListingViewModel : ViewModelBase
 {
+    private readonly IReservationStore _store;
+    private readonly INavigationService _navigation;
 
-    private MainViewModel _mainViewModel = null;
-    public ObservableCollection<ReservationViewModel> Reservations
+    public ObservableCollection<ReservationViewModel> Reservations => _store.Reservations;
+
+    public ICommand MakeReservationCommand { get; }
+    public ICommand EditReservationCommand { get; }
+    public ICommand DeleteReservationCommand { get; }
+
+    public ReservationListingViewModel(IReservationStore store, INavigationService navigation)
     {
-        get;
-    }
+        _store = store;
+        _navigation = navigation;
 
-    //tạo property để trả về danh sách row trong table
-
-    public ICommand MakeReservationCommand
-    {
-        get;
-    } //readonly command - nút bấm trong ReservationListingView.xaml
-
-
-    public ReservationListingViewModel(MainViewModel mainViewModel)
-    {
-        this._mainViewModel = mainViewModel;
-        Reservations = mainViewModel.ListReservations;
-        // 2. SET DATA DEFAULT (Thêm dữ liệu mẫu ban đầu vào đây)
-        // 🟢 3. Thêm dữ liệu mẫu (Chỉ thêm nếu danh sách đang trống để tránh bị trùng lặp)
-        if (Reservations.Count == 0)
-        {
-            ReservationViewModel item1 = null!;
-            item1 = new ReservationViewModel(
-                new Reservation(new RoomID(1, 12), "Sean", DateTime.Now, DateTime.Now.AddDays(2)),
-                onDelete: () => Reservations.Remove(item1),
-                onEdit: () => mainViewModel.EditReservation(item1)
-                );
-            Reservations.Add(item1);
-
-            ReservationViewModel item2 = null!;
-            item2 = new ReservationViewModel(
-                new Reservation(new RoomID(2, 101), "John", DateTime.Now, DateTime.Now.AddDays(5)),
-                onDelete: () => Reservations.Remove(item2),
-                onEdit: () => mainViewModel.EditReservation(item2));
-            Reservations.Add(item2);
-        }
-
-        ;
         MakeReservationCommand = new RelayCommand(() =>
         {
+            _navigation.NavigateTo(new MakeReservationViewModel(_store, _navigation));
+        });
 
-            mainViewModel.CurrentViewModel = new MakeReservationViewModel(mainViewModel);
+        EditReservationCommand = new RelayCommand(parameter =>
+        {
+            if (parameter is ReservationViewModel item)
+            {
+                _navigation.NavigateTo(new MakeReservationViewModel(_store, _navigation, item));
+            }
+        });
+
+        DeleteReservationCommand = new RelayCommand(parameter =>
+        {
+            if (parameter is ReservationViewModel item)
+            {
+                _store.Remove(item);
+            }
         });
     }
 }

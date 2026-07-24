@@ -1,38 +1,34 @@
 ﻿using System.Windows;
 using Reserveroom.Exception;
+using Reserveroom.Services;
 using Reserveroom.viewModels;
 
 namespace Reserveroom;
 
 /// <summary>
-/// Interaction logic for App.xaml
+/// Composition root: tạo Store + Navigation, inject vào MainViewModel.
 /// </summary>
 public partial class App : Application
 {
-  protected override void OnStartup(StartupEventArgs e)
-  {
-
-    try
+    protected override void OnStartup(StartupEventArgs e)
     {
-      //cách viết này là tương đương bên dưới
-      // MainWindow = new MainWindow()
-      //   {
-      //       DataContext = mainViewModel
-      //   };
-      //   MainWindow.Show();
-      
-      MainWindow mainWindow = new MainWindow(); // Tạo màn hình chính
-      mainWindow.DataContext = new MainViewModel(); // Set DataContext cho màn hình chính
-      mainWindow.Show(); // Hiển thị màn hình chính
+        try
+        {
+            IReservationStore store = new ReservationStore();
+            INavigationService navigation = new NavigationService();
 
-      base.OnStartup(e); // Gọi phương thức OnStartup của lớp cha
-    }
-    catch (ReservationConflictExceptionException ex)
-    {
-      Console.WriteLine($"Message error: {ex.Message}");
-      throw;
-    }
+            MainWindow mainWindow = new MainWindow
+            {
+                DataContext = new MainViewModel(store, navigation)
+            };
+            mainWindow.Show();
 
-  }
+            base.OnStartup(e);
+        }
+        catch (ReservationConflictExceptionException ex)
+        {
+            Console.WriteLine($"Message error: {ex.Message}");
+            throw;
+        }
+    }
 }
-

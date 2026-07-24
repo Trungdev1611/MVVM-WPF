@@ -1,22 +1,21 @@
-using System.Windows;
 using System.Windows.Input;
 using Reserveroom.Models;
+using Reserveroom.Services;
 
 namespace Reserveroom.viewModels;
 
 public class MakeReservationViewModel : ViewModelBase
 {
-    private string _username;
+    private readonly IReservationStore _store;
+    private readonly INavigationService _navigation;
+    private readonly ReservationViewModel? _editingItem;
+
+    private string _username = string.Empty;
     private int _floorNo;
     private int _roomNo;
-    private DateTime _startDate;
-    private DateTime _endDate;
+    private DateTime _startDate = DateTime.Today;
+    private DateTime _endDate = DateTime.Today.AddDays(1);
 
-    private ReservationViewModel? _editingItem ; 
-
-    private ReservationViewModel _itemDefault = new ReservationViewModel(new Reservation(new RoomID(3, 301), "usertest",DateTime.Today,DateTime.Today.AddDays(1)));
-
-    // Username property in MakeReservationViewModel
     public string Username
     {
         get => _username;
@@ -27,7 +26,6 @@ public class MakeReservationViewModel : ViewModelBase
         }
     }
 
-    // Floor No property in MakeReservationViewModel
     public int FloorNo
     {
         get => _floorNo;
@@ -37,7 +35,7 @@ public class MakeReservationViewModel : ViewModelBase
             OnPropertyChanged(nameof(FloorNo));
         }
     }
-    // Room No property in MakeReservationViewModel
+
     public int RoomNo
     {
         get => _roomNo;
@@ -47,7 +45,7 @@ public class MakeReservationViewModel : ViewModelBase
             OnPropertyChanged(nameof(RoomNo));
         }
     }
-    // Start Date property in MakeReservationViewModel
+
     public DateTime StartDate
     {
         get => _startDate;
@@ -58,7 +56,6 @@ public class MakeReservationViewModel : ViewModelBase
         }
     }
 
-    //End Date property in MakeReservationViewModel
     public DateTime EndDate
     {
         get => _endDate;
@@ -69,63 +66,54 @@ public class MakeReservationViewModel : ViewModelBase
         }
     }
 
-    // button submit command
     public ICommand MakeReservationSubmitCommand { get; }
-
-    //cancel button command
     public ICommand MakeReservationCancelCommand { get; }
 
-    //method for edit and set value
-    public void SetReservationForEdit(ReservationViewModel itemEdit)
+    /// <summary>Create mới.</summary>
+    public MakeReservationViewModel(IReservationStore store, INavigationService navigation)
+        : this(store, navigation, editingItem: null)
     {
-        if(itemEdit ==null) return;
-        Username = itemEdit.UserName;
-        FloorNo = itemEdit.FloorNumber;
-        RoomNo = itemEdit.RoomNumber;
-        StartDate = itemEdit.StartDate;
-        EndDate = itemEdit.EndDate;
-        this._editingItem = itemEdit;
     }
 
-  
-
-    // Constructor 2: Cho phép gọi và truyền dữ liệu từ bên ngoài vào
-    public MakeReservationViewModel(MainViewModel mainViewModel)
+    /// <summary>Edit — truyền sẵn item cần sửa.</summary>
+    public MakeReservationViewModel(
+        IReservationStore store,
+        INavigationService navigation,
+        ReservationViewModel? editingItem)
     {
+        _store = store;
+        _navigation = navigation;
+        _editingItem = editingItem;
 
-        this.MakeReservationSubmitCommand = new RelayCommand(() =>
+        if (_editingItem != null)
         {
-            if(this._editingItem != null)
+            Username = _editingItem.UserName;
+            FloorNo = _editingItem.FloorNumber;
+            RoomNo = _editingItem.RoomNumber;
+            StartDate = _editingItem.StartDate;
+            EndDate = _editingItem.EndDate;
+        }
+
+        MakeReservationSubmitCommand = new RelayCommand(() =>
+        {
+            if (_editingItem != null)
             {
-                //edit data row
-                _editingItem.UpdateData(Username, FloorNo,RoomNo, StartDate,EndDate  );
+                _editingItem.UpdateData(Username, FloorNo, RoomNo, StartDate, EndDate);
             }
             else
             {
-                //case create new
-                ReservationViewModel newItem = null!;
                 var reservation = new Reservation(new RoomID(FloorNo, RoomNo), Username, StartDate, EndDate);
-                newItem = new ReservationViewModel(
-                    reservation,
-                    onDelete: () => mainViewModel.ListReservations.Remove(newItem),
-                    onEdit: () => mainViewModel.EditReservation(newItem)
-                );
-                mainViewModel.ListReservations.Add(newItem);
+                _store.Add(new ReservationViewModel(reservation));
             }
-        
-            this.NavigationToReservation(mainViewModel);
+
+            NavigateToListing();
         });
 
-        this.MakeReservationCancelCommand = new RelayCommand(() =>
-        {
-            this.NavigationToReservation(mainViewModel);
-        });
+        MakeReservationCancelCommand = new RelayCommand(NavigateToListing);
     }
 
-    private void NavigationToReservation(MainViewModel mainViewModel)
+    private void NavigateToListing()
     {
-        mainViewModel.CurrentViewModel = new ReservationListingViewModel(mainViewModel);
-
+        _navigation.NavigateTo(new ReservationListingViewModel(_store, _navigation));
     }
-
 }

@@ -1,42 +1,23 @@
-using System.Collections.ObjectModel;
-using Reserveroom.Models;
+using Reserveroom.Services;
 
 namespace Reserveroom.viewModels;
 
-public class MainViewModel: ViewModelBase
+/// <summary>
+/// Shell VM — chỉ expose CurrentViewModel từ NavigationService.
+/// Không giữ list, không tự navigate nghiệp vụ.
+/// </summary>
+public class MainViewModel : ViewModelBase
 {
-    // Biến này quyết định màn hình nào đang active hiện tại
-    private  ViewModelBase _currentViewModel;
-    
-    //tạo field để lưu trữ danh sách row trong table
-    public ObservableCollection <ReservationViewModel> Reservations = [];
-    
-    public  ObservableCollection<ReservationViewModel> ListReservations => Reservations;
+    private readonly INavigationService _navigation;
 
-    public  ViewModelBase CurrentViewModel
+    public ViewModelBase? CurrentViewModel => _navigation.CurrentViewModel;
+
+    public MainViewModel(IReservationStore store, INavigationService navigation)
     {
-        get => _currentViewModel;
-        set
-        {
-            _currentViewModel = value;
-            OnPropertyChanged(nameof(CurrentViewModel));
-        }
-        
-    }
+        _navigation = navigation;
+        _navigation.CurrentViewModelChanged += () => OnPropertyChanged(nameof(CurrentViewModel));
 
-    
-
-    public void EditReservation(ReservationViewModel itemEdit)
-    {
-        var makeReservationVM = new MakeReservationViewModel(this);
-        makeReservationVM.SetReservationForEdit(itemEdit);
-        CurrentViewModel = makeReservationVM;
-    }
-
-    public MainViewModel()
-    {
-        // Ban đầu khởi chạy: Cho CurrentViewModel = màn hình Danh sách
-        _currentViewModel = new ReservationListingViewModel(this);
-        // CurrentViewModel = new MakeReservationViewModel();
+        // Màn hình khởi động
+        _navigation.NavigateTo(new ReservationListingViewModel(store, navigation));
     }
 }
