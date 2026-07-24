@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:vm="clr-namespace:Reserveroom.viewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Reserveroom.viewModels"
     d:DataContext="{d:DesignInstance Type=vm:ReservationListingViewModel}"
     mc:Ignorable="d">
     <Grid Margin="20" HorizontalAlignment="Center">
@@ -30,10 +30,8 @@
             Grid.Row="0"
             Grid.Column="1"
             VerticalAlignment="Center"
-        
-            Content="Make Reservation"
             Command="{Binding MakeReservationCommand}"
-             />
+            Content="Make Reservation" />
 
         <DataGrid
             Grid.Row="1"
@@ -41,10 +39,11 @@
             Grid.ColumnSpan="2"
             Margin="0,20,0,0"
             AutoGenerateColumns="False"
-            IsReadOnly="True"
-            GridLinesVisibility="Horizontal"
             CanUserReorderColumns="False"
-            ItemsSource="{Binding Reservations}"> <!--Binding Reservations là property trong ReservationListingViewModel-->
+            GridLinesVisibility="Horizontal"
+            IsReadOnly="True"
+            ItemsSource="{Binding Reservations}">
+            <!--  Binding Reservations là property trong ReservationListingViewModel  -->
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="200"
@@ -62,16 +61,26 @@
                     Width="150"
                     Binding="{Binding EndDate}"
                     Header="End Date" />
-                <DataGridTemplateColumn Header="Thao tác" Width="100">
+                <DataGridTemplateColumn Width="100" Header="Thao tác">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            
-                            <!-- Nút bấm nằm trên mỗi dòng -->
-                            <Button Content="Xóa" 
-                                    Command="{Binding DeleteReservationCommand}" 
-                                    Background="#E74C3C" 
-                                    Foreground="White" 
-                                    Padding="5,2"/>
+                            <StackPanel Orientation="Horizontal">
+                                <!--  Nút bấm nằm trên mỗi dòng  -->
+                                <Button
+                                    Margin="0,0,6,0"
+                                    Padding="8,3"
+                                    Background="#3498DB"
+                                    Command="{Binding EditReservationCommand}"
+                                    Content="Sửa"
+                                    Cursor="Hand"
+                                    Foreground="White" />
+                                <Button
+                                    Padding="5,2"
+                                    Background="#E74C3C"
+                                    Command="{Binding DeleteReservationCommand}"
+                                    Content="Xóa"
+                                    Foreground="White" />
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

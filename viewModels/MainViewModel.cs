@@ -24,6 +24,15 @@ public class MainViewModel: ViewModelBase
         
     }
 
+    
+
+    public void EditReservation(ReservationViewModel itemEdit)
+    {
+        var makeReservationVM = new MakeReservationViewModel(this);
+        makeReservationVM.SetReservationForEdit(itemEdit);
+        CurrentViewModel = makeReservationVM;
+    }
+
     public MainViewModel()
     {
         // Ban đầu khởi chạy: Cho CurrentViewModel = màn hình Danh sách
