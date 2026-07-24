@@ -88,9 +88,10 @@ public class MakeReservationViewModel : ViewModelBase
 
         this.MakeReservationSubmitCommand = new RelayCommand(() =>
         {
-
-            var reservationNew = new Reservation(new RoomID(this._floorNo, this._roomNo), this._username,this._startDate, this._endDate);
-            var itemAddNew = new ReservationViewModel(reservationNew );
+            ReservationViewModel itemAddNew = null!;
+            var reservationNew = new Reservation(new RoomID(this._floorNo, this._roomNo), this._username
+                , this._startDate, this._endDate);
+            itemAddNew = new ReservationViewModel(reservationNew, onDelete: () => mainViewModel.ListReservations.Remove(itemAddNew) );
             
             mainViewModel.ListReservations.Add(itemAddNew);
             this.NavigationToReservation(mainViewModel);

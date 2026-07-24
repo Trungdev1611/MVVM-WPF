@@ -62,6 +62,19 @@
                     Width="150"
                     Binding="{Binding EndDate}"
                     Header="End Date" />
+                <DataGridTemplateColumn Header="Thao tác" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            
+                            <!-- Nút bấm nằm trên mỗi dòng -->
+                            <Button Content="Xóa" 
+                                    Command="{Binding DeleteReservationCommand}" 
+                                    Background="#E74C3C" 
+                                    Foreground="White" 
+                                    Padding="5,2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
